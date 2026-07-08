@@ -16,10 +16,10 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
     //draw background
-    ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, -parallax.y, window.innerWidth, window.innerHeight);
+    ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, parallax.y/5, window.innerWidth, window.innerHeight);
     ctx.save();
     ctx.scale(-1, 1);
-    ctx.drawImage(background, mod(parallax.x/5-window.innerWidth, -2*window.innerWidth), -parallax.y, -window.innerWidth, window.innerHeight);
+    ctx.drawImage(background, mod(parallax.x/5-window.innerWidth, -2*window.innerWidth), parallax.y/5, -window.innerWidth, window.innerHeight);
     ctx.restore();
 
     //draw terrain
@@ -98,25 +98,16 @@ startGameLoop();
 function startPlaying() {
     document.getElementById('homepage').style.display = 'none';
     document.getElementById('store').style.display = 'none';
-    document.getElementById('options').style.display = 'none';
     document.getElementById('gameplay').style.display = 'block';
-}
-function showOptions() {
-    document.getElementById('homepage').style.display = 'none';
-    document.getElementById('store').style.display = 'none';
-    document.getElementById('options').style.display = 'block';
-    document.getElementById('gameplay').style.display = 'none';
 }
 function returnHome() {
     document.getElementById('homepage').style.display = 'block';
     document.getElementById('store').style.display = 'none';
-    document.getElementById('options').style.display = 'none';
     document.getElementById('gameplay').style.display = 'none';
 }
 function showStore() {
     document.getElementById('homepage').style.display = 'none';
     document.getElementById('store').style.display = 'block';
-    document.getElementById('options').style.display = 'none';
     document.getElementById('gameplay').style.display = 'none';
 }
 returnHome();

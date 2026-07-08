@@ -10,6 +10,7 @@ var fallspeed=0;
 const CHARWIDTHBUFFER = 30;
 const CHARHEIGHTBUFFER = 100;
 const pressedKeys = {left:false, right:false};
+var daytime = 0;
 
 window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
@@ -47,6 +48,7 @@ function tickScene(timestamp) {
         //if in gameplay, do gameplay stuff
         charpos.x += (pressedKeys.right - pressedKeys.left) * moveSpeed*elapsed; // Move the character based on pressed keys
         
+        //falling
         if (charpos.y>floor[Math.floor(charpos.x/floorstep)]) {
             fallspeed+= gravity*elapsed; // Increase fall speed due to gravity
             charpos.y -= fallspeed*elapsed; // Move the character up if above the floor
@@ -56,9 +58,10 @@ function tickScene(timestamp) {
         }
 
         if (charpos.x < CHARWIDTHBUFFER) charpos.x = CHARWIDTHBUFFER; // Prevent the character from moving too far left
-        
+        if (charpos.x > floorlength-floorstep-CHARWIDTHBUFFER) charpos.x = floorlength-floorstep-CHARWIDTHBUFFER; // Prevent the character from moving too far right
+
         if (charpos.x > window.innerWidth/2) parallax.x = (charpos.x - window.innerWidth/2); // Parallax effect based on character position
-        if (charpos.x > floorlength-window.innerWidth/2) parallax.x = (charpos.x - floorlength + window.innerWidth/2); // Parallax effect based on character position
+        if (charpos.x > (floorlength-floorstep)-window.innerWidth/2) parallax.x = ((floorlength-floorstep) - window.innerWidth); // Parallax effect based on character position
         if (charpos.y < -CHARHEIGHTBUFFER) {
             parallax.y = CHARHEIGHTBUFFER + charpos.y;
         } else if (charpos.y > CHARHEIGHTBUFFER) {
