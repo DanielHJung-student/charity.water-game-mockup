@@ -2,17 +2,30 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 function drawScene() {
+    // reset canvas
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(10, 10, 100, 100);
+    //draw sky
+    ctx.fillStyle = '#77A8BB';
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 5;
-    ctx.strokeRect(150, 10, 100, 100);
+    //draw background
 
-    ctx.fillStyle = 'white';
-    ctx.fillRect(canvas.width-10, canvas.height-10,10,10);
+    //draw terrain
+    ctx.beginPath();
+    ctx.moveTo(0, window.innerHeight);
+    for (let i = 0; i < floor.length; i++) {
+        const x = (i / (floor.length - 1)) * window.innerWidth;
+        const y = window.innerHeight/2 - (floor[i] * window.innerHeight);
+        ctx.lineTo(x, y);
+    }
+    ctx.lineTo(window.innerWidth, window.innerHeight);
+    ctx.closePath();
+    ctx.fillStyle = '#1A1A1A';
+    ctx.fill();
+
+
+    //draw objects
 }
 
 function resizeCanvas() {

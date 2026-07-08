@@ -10,11 +10,18 @@
     <body>
         <canvas id="gameCanvas" aria-label="Game canvas"></canvas>
         <section id="homepage">
-            <section class="center-horiz overlay-text">
+            <section class="center-horiz overlay-text untouchable">
                 <h1>The Quest<br>for Water</h1>
             </section>
             
-            <h2 class="overlay-text"></h2>
+            <h2 class="overlay-text logo-title untouchable">
+                <img src="assets/jerry_can_yellow.png" alt="charity: water logo">charity: water
+            </h2>
+            <section class="overlay-text center-horiz center-vert vertical-stack" style="font-size:1rem;">
+                <button id="startButton">Play</button>
+                <button id="startButton">Options</button>
+                <button id="startButton">Store</button>
+            </section>
         </section>
 
         <section id="store">
@@ -32,5 +39,6 @@
 
     <!-- include the script after loading the things it's dependant on -->
     <script src="script.js"></script>
+    <script src="gamelogic.js"></script>
 
 </html>
