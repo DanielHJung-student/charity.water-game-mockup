@@ -18,10 +18,15 @@ button {
     font-size: 1.2rem;
     font-weight: 700;
     color: #fff;
-    background: linear-gradient(135deg, #ffb347, #ff7f50);
+    background: linear-gradient(135deg, #fed8c1, #ffc907);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+button * {
+    margin-block-end:0.5em;
+    margin-block-start:0.25em;
 }
 
 button:hover {

@@ -1,19 +1,99 @@
 var floor;
 const floorstep = 5;
 const floorlength = 20000;
+const floorFlatSpace = 100;
 var charpos = {x:0, y:0};
+var parallax = {x:0, y:0};
+const moveSpeed = 0.35;
+const gravity = 0.01;
+var fallspeed=0;
+const CHARWIDTHBUFFER = 30;
+const CHARHEIGHTBUFFER = 100;
+const pressedKeys = {left:false, right:false};
+
+window.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+    if (key === 'arrowleft' || key === 'a') {
+        pressedKeys.left = true;
+        event.preventDefault();
+    }
+    if (key === 'arrowright' || key === 'd') {
+        pressedKeys.right = true;
+        event.preventDefault();
+    }
+});
+
+window.addEventListener('keyup', (event) => {
+    const key = event.key.toLowerCase();
+    if (key === 'arrowleft' || key === 'a') {
+        pressedKeys.left = false;
+    }
+    if (key === 'arrowright' || key === 'd') {
+        pressedKeys.right = false;
+    }
+});
+
+function tickScene(timestamp) {
+     if (!lastFrameTime) {
+         lastFrameTime = timestamp;
+     }
+
+    const elapsed = timestamp - lastFrameTime;
+    if (elapsed >= 16) {
+        drawScene();
+        lastFrameTime = timestamp;
+    }
+    if (document.getElementById('gameplay').style.display === 'block') {
+        //if in gameplay, do gameplay stuff
+        charpos.x += (pressedKeys.right - pressedKeys.left) * moveSpeed*elapsed; // Move the character based on pressed keys
+        
+        if (charpos.y>floor[Math.floor(charpos.x/floorstep)]) {
+            fallspeed+= gravity*elapsed; // Increase fall speed due to gravity
+            charpos.y -= fallspeed*elapsed; // Move the character up if above the floor
+        } else {
+            charpos.y = floor[Math.floor(charpos.x/floorstep)]; // Snap to the floor if below it
+            fallspeed=0;
+        }
+
+        if (charpos.x < CHARWIDTHBUFFER) charpos.x = CHARWIDTHBUFFER; // Prevent the character from moving too far left
+        
+        if (charpos.x > window.innerWidth/2) parallax.x = (charpos.x - window.innerWidth/2); // Parallax effect based on character position
+        if (charpos.x > floorlength-window.innerWidth/2) parallax.x = (charpos.x - floorlength + window.innerWidth/2); // Parallax effect based on character position
+        if (charpos.y < -CHARHEIGHTBUFFER) {
+            parallax.y = CHARHEIGHTBUFFER + charpos.y;
+        } else if (charpos.y > CHARHEIGHTBUFFER) {
+            parallax.y = -CHARHEIGHTBUFFER + charpos.y;
+        }
+    }
+
+    animationFrameId = window.requestAnimationFrame(tickScene);
+}
 
 function generateTerrain(offset = 0) {
     floor = [];
     for (i=0;i<floorlength/floorstep;i++) floor.push(0);
 
-    for (let i = 0; i < floor.length; i++) {
-        const t = i / (floor.length - 1);
-        const phase = offset + t * Math.PI * 2;
-        const smoothWave = Math.sin(phase) * 0.15 + Math.cos(phase * 2) * 0.05;
-        const noise = (Math.sin((i + 1) * 1.7 + offset) + Math.cos((i + 3) * 0.9 - offset)) * 0.08;
-        floor[i] = smoothWave + noise;
+    var slope=0;
+    for (let i = floorFlatSpace/floorstep; i < floor.length; i++) {
+        slope+= (Math.random() - 0.5); // Random slope change
+        slope = clamp(slope, -5, 5); // Limit slope to a certain range
+        floor[i] = floor[i-1]+slope/floorstep;
+        console.log(slope);
     }
+}
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
+function LERP(a, b, t) {
+    return a + (b - a) * t;
+}
+function RLERP(v, a, b) {
+    return (v-b)/(a-b);
+}
+function mod(v,d) 
+{
+    return v-d*Math.floor(v/d);
 }
 
 generateTerrain();
