@@ -16,10 +16,12 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
     //draw background
+    //ctx.drawImage(background, -charpos.x/5, 0, window.innerWidth, window.innerHeight);
     ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, parallax.y/5, window.innerWidth, window.innerHeight);
     ctx.save();
     ctx.scale(-1, 1);
-    ctx.drawImage(background, mod(parallax.x/5-window.innerWidth, -2*window.innerWidth), parallax.y/5, -window.innerWidth, window.innerHeight);
+    //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
+    ctx.drawImage(background, mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth, parallax.y/5, -window.innerWidth, window.innerHeight);
     ctx.restore();
 
     //draw terrain
