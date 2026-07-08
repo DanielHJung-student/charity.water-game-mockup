@@ -10,6 +10,30 @@ body {
     font-family: Arial, sans-serif;
     background: #111;
 }
+/* CHANGE THE BUTTONS TO LOOK MORE IN THEME*/
+button {
+    border: none;
+    border-radius: 999px;
+    padding: 0.9rem 1.8rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ffb347, #ff7f50);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.05);
+}
+
+button:focus-visible {
+    outline: 3px solid #fff4b8;
+    outline-offset: 3px;
+}
 
 #gameCanvas {
     display: block;

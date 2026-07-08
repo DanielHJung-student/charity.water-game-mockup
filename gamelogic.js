@@ -1,17 +1,19 @@
 var floor;
+const floorstep = 5;
+const floorlength = 20000;
+var charpos = {x:0, y:0};
 
-function generateTerrain() {
+function generateTerrain(offset = 0) {
     floor = [];
-    const segments = 200;
+    for (i=0;i<floorlength/floorstep;i++) floor.push(0);
 
-    for (let i = 0; i < segments; i++) {
-        const t = i / (segments - 1);
-        const smoothWave = Math.sin(t * Math.PI * 2) * 0.15 + Math.cos(t * Math.PI * 4) * 0.05;
-        const noise = (Math.sin((i + 1) * 1.7) + Math.cos((i + 3) * 0.9)) * 0.08;
-        floor.push(smoothWave + noise);
+    for (let i = 0; i < floor.length; i++) {
+        const t = i / (floor.length - 1);
+        const phase = offset + t * Math.PI * 2;
+        const smoothWave = Math.sin(phase) * 0.15 + Math.cos(phase * 2) * 0.05;
+        const noise = (Math.sin((i + 1) * 1.7 + offset) + Math.cos((i + 3) * 0.9 - offset)) * 0.08;
+        floor[i] = smoothWave + noise;
     }
 }
 
 generateTerrain();
-console.log(floor);
-drawScene();
