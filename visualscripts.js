@@ -1,6 +1,9 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+var secondWell = new Image();
+secondWell.src = 'assets/Well.png';
+
 function drawScene() { //TODO rework backgrounds/sky, add paralax
     // reset canvas
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -62,6 +65,16 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
         const waterX = waterLocation - parallax.x;
         const waterY = window.innerHeight*3/4 - floor[Math.floor(waterLocation/floorstep)] + parallax.y;
         ctx.drawImage(well, waterX - well.width/2, waterY - well.height);
+    }
+
+    const gameplayButton = document.getElementById('wellButton');
+    if (gameplayButton) {
+        const wellX = 500 - parallax.x - secondWell.width/2;
+        const wellY = window.innerHeight*3/4 - floor[Math.floor(500/floorstep)] + parallax.y - secondWell.height;
+        gameplayButton.style.display = 'block';
+        gameplayButton.style.left = `${wellX}px`;
+        gameplayButton.style.top = `${wellY}px`;
+        ctx.drawImage(secondWell, wellX, wellY);
     }
 
     //draw character
