@@ -36,9 +36,14 @@ window.addEventListener('keyup', (event) => {
 });
 
 function tickScene(timestamp) {
-     if (!lastFrameTime) {
-         lastFrameTime = timestamp;
-     }
+    if (!lastFrameTime) {
+        lastFrameTime = timestamp;
+    }
+
+    //updateinfo
+    document.getElementById('pointreadout').innerText = playerPoints;
+    document.getElementById("pointValue").innerText = playerPoints;
+    setupButtons();
 
     const elapsed = timestamp - lastFrameTime;
     if (elapsed >= 16) {
@@ -82,7 +87,6 @@ function generateTerrain() {
         slope+= (Math.random() - 0.5); // Random slope change
         slope = clamp(slope, -5, 5); // Limit slope to a certain range
         floor[i] = floor[i-1]+slope/floorstep;
-        console.log(slope);
     }
 }
 function clamp(value, min, max) {

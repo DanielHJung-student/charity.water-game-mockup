@@ -2,9 +2,6 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const parallaxItems = [];
 
-const pointreadout = document.getElementById('pointreadout');
-pointreadout.innerText = "1000000";
-
 const background = new Image();
 background.src = 'assets/Basic Mountains.png';
 
