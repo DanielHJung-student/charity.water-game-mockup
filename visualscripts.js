@@ -1,9 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const background = new Image();
-background.src = 'assets/Basic Mountains.png';
-
 function drawScene() { //TODO rework backgrounds/sky, add paralax
     // reset canvas
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -15,38 +12,34 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
     parallaxItems.sort((a, b) => a.ZIndex - b.ZIndex); // Sort parallax items by ZIndex
     for (const parallaxObject of parallaxItems) {
         //image, speed, tileMirronOnX, tileNormallyOnX
-        var x=parallaxObject.offset.x - parallax.x*parallaxObject.speed;
-        var y=parallaxObject.offset.y + parallax.y*parallaxObject.speed;
-        const width = (parallaxObject.scaleToWindow) ? window.innerWidth : parallaxObject.image.width;
-        const height = (parallaxObject.scaleToWindow) ? window.innerHeight : parallaxObject.image.height;
+        const offset = {x: EAR(parallaxObject.offset.x), y: EAR(parallaxObject.offset.y)};
+        var x=offset.x - parallax.x*EAR(parallaxObject.speed);
+        var y=offset.y + parallax.y*EAR(parallaxObject.speed);
+        const width = (EAR(parallaxObject.scaleToWindow)) ? window.innerWidth : EAR(parallaxObject.image).width;
+        const height = (EAR(parallaxObject.scaleToWindow)) ? window.innerHeight : EAR(parallaxObject.image).height;
 
-        if (parallaxObject.tileMirrorOnX||parallaxObject.tileNormallyOnX) {
-            //if we are tiling either normal or mirror, we need to draw multiple copies of the image every other set
-            x = mod(window.innerWidth+x, 2*window.innerWidth)-window.innerWidth
+        const shouldTile = Boolean(EAR(parallaxObject.tileMirrorOnX) || EAR(parallaxObject.tileNormallyOnX));
+        const shouldMirror = Boolean(EAR(parallaxObject.tileMirrorOnX));
+        const tileWidth = width;
+
+        if (shouldTile) {
+            x = mod(x, tileWidth);
         }
-        ctx.drawImage(parallaxObject.image, x, y, width, height);
-        //extra tilings
-        if (parallaxObject.tileNormallyOnX) {
-            ctx.drawImage(parallaxObject.image, x+window.innerWidth, y, width, height);
+
+        const tilePositions = shouldTile ? [x - tileWidth, x, x + tileWidth] : [x];
+        for (const tileX of tilePositions) {
+            ctx.drawImage(EAR(parallaxObject.image), tileX, y, width, height);
         }
-        if (parallaxObject.tileMirrorOnX) {
+
+        if (shouldMirror) {
             ctx.save();
             ctx.scale(-1, 1);
-            //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
-            //mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth
-            ctx.drawImage(parallaxObject.image, x+2*window.innerWidth, y, -width, height);
+            for (const tileX of tilePositions) {
+                ctx.drawImage(EAR(parallaxObject.image), -tileX - tileWidth, y, -width, height);
+            }
             ctx.restore();
         }
     }
-
-    //draw background
-    //ctx.drawImage(background, -charpos.x/5, 0, window.innerWidth, window.innerHeight);
-    // ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, parallax.y/5, window.innerWidth, window.innerHeight);
-    // ctx.save();
-    // ctx.scale(-1, 1);
-    // //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
-    // ctx.drawImage(background, mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth, parallax.y/5, -window.innerWidth, window.innerHeight);
-    // ctx.restore();
 
     //draw terrain
     ctx.beginPath();
