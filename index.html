@@ -19,20 +19,53 @@
             </h2>
             <section class="overlay-text center-horiz center-vert vertical-stack" style="font-size:1rem;">
                 <button id="startButton" onclick="startPlaying()">Play</button>
-                <button id="startButton" style="padding:0.5em 2em 0 2em;">Store<br><p style="border: 1px solid black; background:white; color:#1A1A1A" id="pointreadout">###</p></button>
+                <button id="storeButton" style="padding:0.5em 2em 0 2em;" onclick="showStore()">Store<br><p style="border: 1px solid black; background:white; color:#1A1A1A" id="pointreadout">###</p></button>
             </section>
         </section>
 
         <section id="store">
-
+            <div class="store-menu">
+                <p> Points to spend: <span id="pointValue">0</span></p>
+                <div class="store-item">
+                    <button class="store-title" onclick="toggleStoreSection('storeHouses')">Houses</button>
+                    <div id="storeHouses" class="store-subsection">
+                        <p>Default House<button type="button" class="buyequip-button">Purchase</button></p>
+                        <p>Compass<button type="button" class="buyequip-button">Purchase</button></p>
+                    </div>
+                </div>
+                <div class="store-item">
+                    <button class="store-title" onclick="toggleStoreSection('storeCharacters')">Characters</button>
+                    <div id="storeCharacters" class="store-subsection">
+                        <p>Default <button type="button" class="buyequip-button">Purchase</button></p>
+                        <p>Better gear<button type="button" class="buyequip-button">Purchase</button></p>
+                    </div>
+                </div>
+                <div class="store-item">
+                    <button class="store-title" onclick="toggleStoreSection('storeLandscapes')">Landscapes</button>
+                    <div id="storeLandscapes" class="store-subsection">
+                        <p>Default mountains<button type="button" class="buyequip-button">Purchase</button></p>
+                        <p>Kilimanjaro<button type="button" class="buyequip-button">Purchase</button></p>
+                    </div>
+                </div>
+                <div class="store-item">
+                    <button class="store-title" onclick="toggleStoreSection('storeContainers')">Containers</button>
+                    <div id="storeContainers" class="store-subsection">
+                        <p>Default container<button type="button" class="buyequip-button">Purchase</button></p>
+                        <p>Jerry can<button type="button" class="buyequip-button">Purchase</button></p>
+                    </div>
+                </div>
+            </div>
+            <button id="back-button" onclick="returnHome()">Return to Home</button>
         </section>
         
         <section id="gameplay">
-            
+
         </section>
     </body>
 
     <!-- include the scripts after loading the things they are dependant on -->
+    <script src="parallaxcode.js"></script>
+    <script src="storescript.js"></script>
     <script src="gamelogic.js"></script>
     <script src="visualscripts.js"></script>
 

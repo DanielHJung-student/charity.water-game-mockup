@@ -1,4 +1,5 @@
 var floor;
+var playerPoints = 0;
 const floorstep = 5;
 const floorlength = 20000;
 const floorFlatSpace = 100;
@@ -72,7 +73,7 @@ function tickScene(timestamp) {
     animationFrameId = window.requestAnimationFrame(tickScene);
 }
 
-function generateTerrain(offset = 0) {
+function generateTerrain() {
     floor = [];
     for (i=0;i<floorlength/floorstep;i++) floor.push(0);
 

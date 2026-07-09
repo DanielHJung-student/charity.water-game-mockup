@@ -1,5 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const parallaxItems = [];
 
 const pointreadout = document.getElementById('pointreadout');
 pointreadout.innerText = "1000000";
@@ -109,7 +110,14 @@ function returnHome() {
 }
 function showStore() {
     document.getElementById('homepage').style.display = 'none';
-    document.getElementById('store').style.display = 'block';
+    document.getElementById('store').style.display = 'flex';
     document.getElementById('gameplay').style.display = 'none';
 }
 returnHome();
+
+function toggleStoreSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.classList.toggle('open');
+    }
+}

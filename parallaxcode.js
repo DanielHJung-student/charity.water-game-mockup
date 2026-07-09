@@ -1,7 +1,8 @@
 class ParallaxObject {
-    constructor(draw, speed, mirrorOnX = true) {
-        this.draw = draw;
+    constructor(image, speed, mirrorOnX = true, tileOnX = true) {
+        this.image = image;
         this.speed = speed;
         this.mirrorOnX = mirrorOnX;
+        this.tileOnX = tileOnX;
     }
 }
