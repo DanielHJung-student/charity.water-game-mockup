@@ -1,6 +1,7 @@
 const OWNEDKEYWORD = "owned";
 const EQUIPPEDKEYWORD = "equipped";
 const UNOWNEDKEYWORD = "unowned";
+const parallaxItems = [];
 var items = {
     houses: [],
     characters: [],
@@ -22,7 +23,7 @@ function remakeParallaxItems() {
     for (const i in items) {
         for (const item of items[i]) {
             if (item.owned === EQUIPPEDKEYWORD) {
-                parallaxItems.push(item.parallaxObjects); //TODO figure this out
+                parallaxItems.push(...item.parallaxObjects); //TODO figure this out
             }
         }
     }
@@ -68,3 +69,12 @@ function setupButtons() {
         }
     }
 }
+
+//TODO table of data entries
+let house0= new Image();house0.src = "assets/Manica House.png"
+items.houses[0].parallaxObjects = [new ParallaxObject(house0, 1, false, false, {x:100,y:()=>{return window.innerHeight*3/4-house0.height}})];
+let landscape0= new Image();landscape0.src = "assets/Basic Mountains.png"
+items.landscapes[0].parallaxObjects = [new ParallaxObject(landscape0, 0.2, true,false, {x:0,y:0},true)];
+
+
+remakeParallaxItems();

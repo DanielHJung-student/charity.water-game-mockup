@@ -2,7 +2,7 @@ var floor;
 var playerPoints = 0;
 const floorstep = 5;
 const floorlength = 20000;
-const floorFlatSpace = 100;
+const floorFlatSpace = 400;
 var charpos = {x:0, y:0};
 var parallax = {x:0, y:0};
 const moveSpeed = 0.35;
@@ -11,7 +11,9 @@ var fallspeed=0;
 const CHARWIDTHBUFFER = 30;
 const CHARHEIGHTBUFFER = 100;
 const pressedKeys = {left:false, right:false};
-var daytime = 0;
+let haswater = false;
+
+const waterLocations = []; //TODO generate water areas
 
 window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
@@ -88,6 +90,7 @@ function generateTerrain() {
         slope = clamp(slope, -5, 5); // Limit slope to a certain range
         floor[i] = floor[i-1]+slope/floorstep;
     }
+    waterLocations.push(Math.random() * (floorlength - floorFlatSpace) + floorFlatSpace); // Random water location
 }
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);

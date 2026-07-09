@@ -1,6 +1,5 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const parallaxItems = [];
 
 const background = new Image();
 background.src = 'assets/Basic Mountains.png';
@@ -13,14 +12,41 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
     ctx.fillStyle = '#79bdd8';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
+    parallaxItems.sort((a, b) => a.ZIndex - b.ZIndex); // Sort parallax items by ZIndex
+    for (const parallaxObject of parallaxItems) {
+        //image, speed, tileMirronOnX, tileNormallyOnX
+        var x=parallaxObject.offset.x - parallax.x*parallaxObject.speed;
+        var y=parallaxObject.offset.y + parallax.y*parallaxObject.speed;
+        const width = (parallaxObject.scaleToWindow) ? window.innerWidth : parallaxObject.image.width;
+        const height = (parallaxObject.scaleToWindow) ? window.innerHeight : parallaxObject.image.height;
+
+        if (parallaxObject.tileMirrorOnX||parallaxObject.tileNormallyOnX) {
+            //if we are tiling either normal or mirror, we need to draw multiple copies of the image every other set
+            x = mod(window.innerWidth+x, 2*window.innerWidth)-window.innerWidth
+        }
+        ctx.drawImage(parallaxObject.image, x, y, width, height);
+        //extra tilings
+        if (parallaxObject.tileNormallyOnX) {
+            ctx.drawImage(parallaxObject.image, x+window.innerWidth, y, width, height);
+        }
+        if (parallaxObject.tileMirrorOnX) {
+            ctx.save();
+            ctx.scale(-1, 1);
+            //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
+            //mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth
+            ctx.drawImage(parallaxObject.image, x+2*window.innerWidth, y, -width, height);
+            ctx.restore();
+        }
+    }
+
     //draw background
     //ctx.drawImage(background, -charpos.x/5, 0, window.innerWidth, window.innerHeight);
-    ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, parallax.y/5, window.innerWidth, window.innerHeight);
-    ctx.save();
-    ctx.scale(-1, 1);
-    //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
-    ctx.drawImage(background, mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth, parallax.y/5, -window.innerWidth, window.innerHeight);
-    ctx.restore();
+    // ctx.drawImage(background, mod(window.innerWidth-parallax.x/5, 2*window.innerWidth)-window.innerWidth, parallax.y/5, window.innerWidth, window.innerHeight);
+    // ctx.save();
+    // ctx.scale(-1, 1);
+    // //ctx.drawImage(background, charpos.x/5-window.innerWidth, 0, -window.innerWidth, window.innerHeight)
+    // ctx.drawImage(background, mod(parallax.x/5, -2*window.innerWidth)+window.innerWidth, parallax.y/5, -window.innerWidth, window.innerHeight);
+    // ctx.restore();
 
     //draw terrain
     ctx.beginPath();
@@ -36,9 +62,16 @@ function drawScene() { //TODO rework backgrounds/sky, add paralax
     ctx.fillStyle = '#BF6C56';
     ctx.fill();
 
-
     //draw objects
+    const well = new Image();
+    well.src = 'assets/Well.png';
+    for (const waterLocation of waterLocations) {
+        const waterX = waterLocation - parallax.x;
+        const waterY = window.innerHeight*3/4 - floor[Math.floor(waterLocation/floorstep)] + parallax.y;
+        ctx.drawImage(well, waterX - well.width/2, waterY - well.height);
+    }
 
+    //draw character
     if (document.getElementById('gameplay').style.display === 'block') {
         const charRadius = 20;
         ctx.beginPath();
